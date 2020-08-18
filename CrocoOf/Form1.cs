@@ -38,6 +38,7 @@ namespace Croco
             if (ifRunning())
             {               
                 RunPsExec("stop");
+                RegeditOf("CrocoOff");
                 GetStatus();
                 btnOnOf.Text = "Stop";
                 toolStripMenuOnOf.Text = "Stop";
@@ -45,6 +46,7 @@ namespace Croco
             else
             {                
                 RunPsExec("start");
+                RegeditOf("CrocoOn");
                 GetStatus();
                 btnOnOf.Text = "Start";
                 toolStripMenuOnOf.Text = "Start";
@@ -56,6 +58,7 @@ namespace Croco
             if (ifRunning())
             {
                 RunPsExec("stop");
+                RegeditOf("CrocoOff");
                 GetStatus();
                 btnOnOf.Text = "Stop";
                 toolStripMenuOnOf.Text = "Stop";
@@ -63,6 +66,7 @@ namespace Croco
             else
             {
                 RunPsExec("start");
+                RegeditOf("CrocoOn");
                 GetStatus();
                 btnOnOf.Text = "Start";
                 toolStripMenuOnOf.Text = "Start";
@@ -93,16 +97,24 @@ namespace Croco
             label1.Text = tmp.ToString();            
         }
 
+        private void RegeditOf(string filename)
+        {
+            Process regedit = Process.Start("regedit.exe", "/s " + Directory.GetCurrentDirectory() + "\\tools\\"+ filename + ".reg");
+            regedit.Start();
+        }
+
         private void RunPsExec(string command)
         {            
             try
             {
                 Process p = new Process();
-                p.StartInfo.UseShellExecute = false;                
+                p.StartInfo.UseShellExecute = false;
+                p.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
                 string psexec = Directory.GetCurrentDirectory() + "\\tools\\PsExec.exe";
                 p.StartInfo.FileName = psexec;
                 p.StartInfo.Arguments = $"-i -s net {command} \"CrocoTime Agent\"";
-                p.Start();                
+                p.Start();
+                p.CloseMainWindow();
             }
             catch (Exception ex)
             {
