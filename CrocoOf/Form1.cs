@@ -44,9 +44,9 @@ namespace Croco
                 toolStripMenuOnOf.Text = "Stop";
             }
             else
-            {                
-                RunPsExec("start");
+            {
                 RegeditOf("CrocoOn");
+                RunPsExec("start");
                 GetStatus();
                 btnOnOf.Text = "Start";
                 toolStripMenuOnOf.Text = "Start";
